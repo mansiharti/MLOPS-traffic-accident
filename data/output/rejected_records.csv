@@ -1,0 +1,3 @@
+accident_index,accident_date,accident_time,accident_severity,number_of_vehicles,number_of_casualties,road_type,speed_limit,light_conditions,road_surface_conditions,latitude,longitude,local_authority,recorded_weather_code,rejection_reason
+2025622500752,2025-11-06,09:35,Serious,2,1,Single carriageway,20,Daylight,Dry,,,W06000015,1,"failed required identifier, date/time, severity, count, or UK-coordinate validation"
+2025622500721,2025-11-04,08:51,Slight,2,1,Unknown,20,Daylight,Wet or damp,,,W06000011,2,"failed required identifier, date/time, severity, count, or UK-coordinate validation"

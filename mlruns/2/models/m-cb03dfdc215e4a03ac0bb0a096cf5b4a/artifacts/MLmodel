@@ -1,0 +1,23 @@
+artifact_path: file:///C:/Users/hp/Downloads/traffic-accident-project/mlruns/2/models/m-cb03dfdc215e4a03ac0bb0a096cf5b4a/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.2
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+    skops_trusted_types: null
+mlflow_version: 3.18.0
+model_id: m-cb03dfdc215e4a03ac0bb0a096cf5b4a
+model_size_bytes: 1179256
+model_uuid: m-cb03dfdc215e4a03ac0bb0a096cf5b4a
+prompts: null
+run_id: 90ef469bcf644da2ad014227b4c5cd90
+utc_time_created: '2026-11-04 09:16:47.418707'

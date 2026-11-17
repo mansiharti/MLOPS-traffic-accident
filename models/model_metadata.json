@@ -1,0 +1,99 @@
+{
+  "model_name": "RandomForest_Balanced",
+  "algorithm": "RandomForestClassifier",
+  "model_version": "1.0.0",
+  "registered_model_name": "traffic_accident_severity_model",
+  "trained_at": "2026-11-06 06:24:31 UTC",
+  "mlflow_run_id": "60dc5cd39a9d419fbfc2650aed13c53f",
+  "features": {
+    "numerical": [
+      "accident_hour",
+      "speed_limit",
+      "number_of_vehicles",
+      "number_of_casualties",
+      "temperature",
+      "precipitation",
+      "wind_speed"
+    ],
+    "categorical": [
+      "road_type",
+      "light_conditions",
+      "road_surface_conditions",
+      "weather_condition",
+      "day_of_week"
+    ],
+    "all": [
+      "accident_hour",
+      "speed_limit",
+      "number_of_vehicles",
+      "number_of_casualties",
+      "temperature",
+      "precipitation",
+      "wind_speed",
+      "road_type",
+      "light_conditions",
+      "road_surface_conditions",
+      "weather_condition",
+      "day_of_week"
+    ]
+  },
+  "target_classes": [
+    "Fatal",
+    "Serious",
+    "Slight"
+  ],
+  "validation_metrics": {
+    "run_id": "60dc5cd39a9d419fbfc2650aed13c53f",
+    "val_accuracy": 0.555424218544786,
+    "val_macro_f1": 0.3597548360300529,
+    "val_macro_recall": 0.43393932970627724,
+    "val_fatal_recall": 0.34545454545454546,
+    "val_serious_recall": 0.31567852437417654,
+    "val_slight_recall": 0.6406849192901097,
+    "fatal_fnr": 0.6545454545454545,
+    "train_duration_sec": 4.150087356567383
+  },
+  "test_metrics": {
+    "test_accuracy": 0.5752839976360891,
+    "test_macro_f1": 0.3810415859479299,
+    "test_weighted_f1": 0.6138462397221317,
+    "test_fatal_recall": 0.3686635944700461,
+    "test_serious_recall": 0.3841113841113841,
+    "test_slight_recall": 0.6409375275354657
+  },
+  "all_model_comparison": {
+    "Baseline_LogisticRegression": {
+      "run_id": "9f393798e77d45b9b3b20d13327063f8",
+      "val_accuracy": 0.46191226687680587,
+      "val_macro_f1": 0.31790802085825104,
+      "val_macro_recall": 0.43208471008598187,
+      "val_fatal_recall": 0.4954545454545455,
+      "val_serious_recall": 0.2769433465085639,
+      "val_slight_recall": 0.5238562382948363,
+      "fatal_fnr": 0.5045454545454545,
+      "train_duration_sec": 5.066307306289673
+    },
+    "RandomForest_Balanced": {
+      "run_id": "60dc5cd39a9d419fbfc2650aed13c53f",
+      "val_accuracy": 0.555424218544786,
+      "val_macro_f1": 0.3597548360300529,
+      "val_macro_recall": 0.43393932970627724,
+      "val_fatal_recall": 0.34545454545454546,
+      "val_serious_recall": 0.31567852437417654,
+      "val_slight_recall": 0.6406849192901097,
+      "fatal_fnr": 0.6545454545454545,
+      "train_duration_sec": 4.150087356567383
+    },
+    "XGBoost_Balanced": {
+      "run_id": "08fddcb4b02044e2a01e063ee5080d3d",
+      "val_accuracy": 0.5251510375623851,
+      "val_macro_f1": 0.3474871237011748,
+      "val_macro_recall": 0.46289490980358333,
+      "val_fatal_recall": 0.5,
+      "val_serious_recall": 0.28010540184453225,
+      "val_slight_recall": 0.6085793275662178,
+      "fatal_fnr": 0.5,
+      "train_duration_sec": 6.4870405197143555
+    }
+  }
+}

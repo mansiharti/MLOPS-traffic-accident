@@ -1,0 +1,180 @@
+services:
+  # =================================================================
+  # [PART 1 & 2 WAREHOUSE] PostgreSQL Star Schema & Airflow Metadata
+  # =================================================================
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: traffic_accidents
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: traffic_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d traffic_accidents"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # =================================================================
+  # [PART 1 ETL LOADER] Initial Warehouse Seeder (101,523 records)
+  # =================================================================
+  warehouse-loader:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: traffic-accident-app:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: traffic_accidents
+      DB_USER: postgres
+      DB_PASSWORD: traffic_password
+    volumes:
+      - ./data:/app/data
+      - ./scripts:/app/scripts
+      - ./schema.sql:/app/schema.sql:ro
+    command: python scripts/load_db.py
+    restart: "no"
+
+  # =================================================================
+  # [PART 2 MLOPS SERVING] FastAPI Low-Latency REST Microservice
+  # =================================================================
+  fastapi-inference:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: traffic-accident-app:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./src:/app/src
+    environment:
+      - PORT=8000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # =================================================================
+  # [PARTS 1 & 2 UNIFIED BI] Streamlit Analytics & ML Risk Dashboard
+  # =================================================================
+  streamlit-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: traffic-accident-app:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+      warehouse-loader:
+        condition: service_completed_successfully
+      fastapi-inference:
+        condition: service_healthy
+    ports:
+      - "8501:8501"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: traffic_accidents
+      DB_USER: postgres
+      DB_PASSWORD: traffic_password
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./src:/app/src
+      - ./app.py:/app/app.py
+    command: streamlit run app.py --server.port 8501 --server.address 0.0.0.0 --server.headless true
+    restart: unless-stopped
+
+  # =================================================================
+  # [PART 2 EXPERIMENT TRACKING] MLflow Tracking Server & Model Registry
+  # =================================================================
+  mlflow-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: traffic-accident-app:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./mlruns:/app/mlruns
+    command: ["mlflow", "ui", "--backend-store-uri", "sqlite:///data/mlflow.db", "--host", "0.0.0.0", "--port", "5000"]
+    restart: unless-stopped
+
+  # =================================================================
+  # [PARTS 1 & 2 ORCHESTRATION] Apache Airflow 2.10.5 Infrastructure
+  # =================================================================
+  airflow-init:
+    build:
+      context: .
+    image: traffic-accident-airflow:2.10.5
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment: &airflow-environment
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://postgres:traffic_password@postgres:5432/traffic_accidents
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: traffic_accidents
+      DB_USER: postgres
+      DB_PASSWORD: traffic_password
+    volumes: &airflow-volumes
+      - ./dags:/opt/airflow/dags
+      - ./scripts:/opt/airflow/scripts
+      - ./src:/opt/airflow/src
+      - ./data:/opt/airflow/data
+      - ./models:/opt/airflow/models
+      - ./schema.sql:/opt/airflow/schema.sql:ro
+    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Airflow --lastname Admin --role Admin --email admin@example.com || true"
+
+  airflow-webserver:
+    build:
+      context: .
+    image: traffic-accident-airflow:2.10.5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    environment: *airflow-environment
+    volumes: *airflow-volumes
+    ports:
+      - "8080:8080"
+    command: webserver
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:8080/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
+  airflow-scheduler:
+    build:
+      context: .
+    image: traffic-accident-airflow:2.10.5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    environment: *airflow-environment
+    volumes: *airflow-volumes
+    command: scheduler
+
+volumes:
+  postgres_data:

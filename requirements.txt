@@ -1,0 +1,17 @@
+pandas
+requests
+psycopg2-binary
+SQLAlchemy
+python-dotenv
+streamlit
+plotly
+apache-airflow==2.10.5
+scikit-learn
+xgboost
+mlflow
+fastapi
+uvicorn
+pydantic
+joblib
+matplotlib
+seaborn

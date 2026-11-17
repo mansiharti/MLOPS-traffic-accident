@@ -1,0 +1,147 @@
+{
+  "record_count": 71066,
+  "target_distribution": {
+    "Slight": 0.7361888948301579,
+    "Serious": 0.24951453578363775,
+    "Fatal": 0.014296569386204373
+  },
+  "numerical_stats": {
+    "accident_hour": {
+      "mean": 13.751526749781894,
+      "std": 5.088873776159454,
+      "min": 0.0,
+      "max": 23.0,
+      "quantiles": [
+        7.0,
+        10.0,
+        14.0,
+        17.0,
+        20.0
+      ]
+    },
+    "speed_limit": {
+      "mean": 35.834998452143076,
+      "std": 14.666489209969285,
+      "min": 20.0,
+      "max": 70.0,
+      "quantiles": [
+        20.0,
+        30.0,
+        30.0,
+        40.0,
+        60.0
+      ]
+    },
+    "number_of_vehicles": {
+      "mean": 1.822024596853629,
+      "std": 0.6861647203942729,
+      "min": 1.0,
+      "max": 17.0,
+      "quantiles": [
+        1.0,
+        1.0,
+        2.0,
+        2.0,
+        2.0
+      ]
+    },
+    "number_of_casualties": {
+      "mean": 1.263994033715138,
+      "std": 0.8728832166320202,
+      "min": 1.0,
+      "max": 142.0,
+      "quantiles": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        2.0
+      ]
+    },
+    "temperature": {
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "quantiles": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "precipitation": {
+      "mean": 0.07632341766808319,
+      "std": 0.2655167520272432,
+      "min": 0.0,
+      "max": 1.0,
+      "quantiles": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "wind_speed": {
+      "mean": 10.15408212084541,
+      "std": 1.5124558510662882,
+      "min": 10.0,
+      "max": 25.0,
+      "quantiles": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ]
+    }
+  },
+  "categorical_distribution": {
+    "road_type": {
+      "Single carriageway": 0.7328258238820251,
+      "Dual carriageway": 0.1416992654715335,
+      "Roundabout": 0.06591056201277685,
+      "One way street": 0.023893282300959672,
+      "Unknown": 0.01953114006697999,
+      "Slip road": 0.01613992626572482
+    },
+    "light_conditions": {
+      "Daylight": 0.779078602988771,
+      "Darkness - lights lit": 0.15688233473109503,
+      "Darkness - no lighting": 0.04523963639433766,
+      "Darkness - lighting unknown": 0.012861283876959445,
+      "Darkness - lights unlit": 0.005811499169785833,
+      "Unknown": 0.000126642839051023
+    },
+    "road_surface_conditions": {
+      "Dry": 0.8123153125263839,
+      "Wet or damp": 0.15326597810486028,
+      "Unknown": 0.019108997270143247,
+      "Frost or ice": 0.012692426758224748,
+      "Snow": 0.001702642613908198,
+      "Flood over 3cm deep": 0.0009146427264796105
+    },
+    "weather_condition": {
+      "Fine no high winds": 0.861086876987589,
+      "Raining no high winds": 0.06892184729687896,
+      "Other": 0.031379281231531254,
+      "Unknown": 0.023063068133847408,
+      "Fine with high winds": 0.005642642051051135,
+      "Raining with high winds": 0.0044747136464694795,
+      "Snowing no high winds": 0.002772071032561281,
+      "Fog or mist": 0.00250471392789801,
+      "Snowing with high winds": 0.00015478569217347254
+    },
+    "day_of_week": {
+      "Friday": 0.16439647651478906,
+      "Thursday": 0.15229504967213575,
+      "Wednesday": 0.14926969296147244,
+      "Tuesday": 0.14449947935721724,
+      "Monday": 0.1388709087327273,
+      "Saturday": 0.1376748374750232,
+      "Sunday": 0.11299355528663496
+    }
+  }
+}
